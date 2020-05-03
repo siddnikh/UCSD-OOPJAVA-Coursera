@@ -8,7 +8,8 @@ import java.util.List;
 
 //Processing library
 import processing.core.PApplet;
-
+import processing.core.PFont;
+import processing.core.PShape;
 //Unfolding libraries
 import de.fhpotsdam.unfolding.UnfoldingMap;
 import de.fhpotsdam.unfolding.marker.Marker;
@@ -33,7 +34,7 @@ public class EarthquakeCityMap extends PApplet {
 	private static final long serialVersionUID = 1L;
 
 	// IF YOU ARE WORKING OFFLINE, change the value of this variable to true
-	private static final boolean offline = true;
+	private static final boolean offline = false;
 	
 	// Less than this threshold is a light earthquake
 	public static final float THRESHOLD_MODERATE = 5;
@@ -51,19 +52,18 @@ public class EarthquakeCityMap extends PApplet {
 
 	
 	public void setup() {
-		size(950, 600, OPENGL);
+		size(1280, 720, OPENGL);
 		
 
 		if (offline) {
-		    map = new UnfoldingMap(this, 200, 50, 700, 500, new MBTilesMapProvider(mbTilesString));
+		    map = new UnfoldingMap(this, 550, 100, 680, 500, new MBTilesMapProvider(mbTilesString));
 		    earthquakesURL = "2.5_week.atom"; 	// Same feed, saved Aug 7, 2015, for working offline
 		}
 		else {
-			map = new UnfoldingMap(this, 200, 50, 700, 500, new Google.GoogleMapProvider());
+			map = new UnfoldingMap(this, 550, 100, 680, 500, new Google.GoogleMapProvider());
 			// IF YOU WANT TO TEST WITH A LOCAL FILE, uncomment the next line
 			//earthquakesURL = "2.5_week.atom";
 		}
-		
 	    map.zoomToLevel(2);
 	    MapUtils.createDefaultEventDispatcher(this, map);	
 			
@@ -138,7 +138,7 @@ public class EarthquakeCityMap extends PApplet {
 	}
 	
 	public void draw() {
-	    background(10);
+	    background(color(150,150,150));
 	    map.draw();
 	    addKey();
 	}
@@ -148,7 +148,30 @@ public class EarthquakeCityMap extends PApplet {
 	// TODO: Implement this method to draw the key
 	private void addKey() 
 	{	
-		// Remember you can use Processing's graphics methods here
-	
+		fill(255,255,255);
+		rect(100, 100, 400, 500);
+		
+		PFont f1 = createFont("Arial", 24, true);
+		
+		fill(0,0,0);
+		textFont(f1);
+		text("Map Key", 135, 200);
+		
+		PFont f2 = createFont("Arial", 16, true);
+		
+		fill(225, 50, 50);
+		ellipse(160, 295, 40, 40);
+		textFont(f2);
+		text("For magnitude 5.0 and above", 200, 300 );
+		
+		fill(255, 255, 0);
+		ellipse(160, 395, 30, 30);
+		textFont(f2);
+		text("For magnitude between 4.0 and 5.0", 200, 400);
+		
+		fill(0, 150, 255);
+		ellipse(160, 495, 20, 20);
+		textFont(f2);
+		text("For magnitude below 4.0", 200, 500);
 	}
 }
